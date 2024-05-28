@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import './App.css';
 
 function Login() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
+    const navigate = useNavigate();
 
     const handleLogin = async () => {
         const xml = `
@@ -18,40 +21,48 @@ function Login() {
             </soapenv:Envelope>
         `;
 
-        const response = await fetch('http://localhost:3000/soap', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'text/xml',
-            },
-            body: xml,
-        });
+        try {
+            const response = await fetch('http://localhost:3000/soap', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'text/xml',
+                },
+                body: xml,
+            });
 
-        const text = await response.text();
-        console.log(text);
-        if (text.includes('Login Successfully')) {
-            setMessage('Login Successful');
-        } else {
-            setMessage('Invalid credentials');
+            const text = await response.text();
+            console.log(text);
+            if (text.includes('Login Successfully')) {
+                setMessage('Login Successful');
+                localStorage.setItem('authenticated', 'true');
+                navigate('/dashboard');
+            } else {
+                setMessage('Invalid credentials');
+            }
+        } catch (error) {
+            setMessage('Error connecting to the server');
         }
     };
 
     return (
-        <div>
-            <h2>Login</h2>
-            <input
-                type="text"
-                placeholder="Username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-            />
-            <input
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-            />
-            <button onClick={handleLogin}>Login</button>
-            <p>{message}</p>
+        <div className="container">
+            <div className="card">
+                <h2>Login</h2>
+                <input
+                    type="text"
+                    placeholder="Username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                />
+                <input
+                    type="password"
+                    placeholder="Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                />
+                <button onClick={handleLogin}>Login</button>
+                <p>{message}</p>
+            </div>
         </div>
     );
 }
