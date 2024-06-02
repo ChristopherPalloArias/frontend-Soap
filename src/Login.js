@@ -49,7 +49,7 @@ function Login() {
     return (
         <div className="container">
             <div className="card">
-                <h2>Login</h2>
+                <h2>Login SOAP</h2>
                 <form onSubmit={handleLogin}>
                     <input
                         type="text"
