@@ -8,7 +8,9 @@ function Login() {
     const [message, setMessage] = useState('');
     const navigate = useNavigate();
 
-    const handleLogin = async () => {
+    const handleLogin = async (e) => {
+        e.preventDefault(); // Evita que el formulario se envíe automáticamente
+
         const xml = `
             <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:log="http://example.com/login">
                 <soapenv:Header/>
@@ -48,19 +50,23 @@ function Login() {
         <div className="container">
             <div className="card">
                 <h2>Login</h2>
-                <input
-                    type="text"
-                    placeholder="Username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                />
-                <input
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                />
-                <button onClick={handleLogin}>Login</button>
+                <form onSubmit={handleLogin}>
+                    <input
+                        type="text"
+                        placeholder="Username"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        autoComplete="username"
+                    />
+                    <input
+                        type="password"
+                        placeholder="Password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        autoComplete="current-password"
+                    />
+                    <button type="submit">Login</button>
+                </form>
                 <p>{message}</p>
             </div>
         </div>
