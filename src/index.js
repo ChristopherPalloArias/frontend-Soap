@@ -4,7 +4,10 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+// Crea la raíz de React en el elemento con id 'root' en el HTML
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
+// Renderiza el componente App dentro de la raíz de React
 root.render(
   <React.StrictMode>
     <App />
